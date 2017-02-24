@@ -32,5 +32,7 @@ int main(int argc,char *argv[])
 		assert(*value==values[i]);
 	}
 
+	printf("all count is %d\n",h.m_count);
+
 	return 0;
 }
