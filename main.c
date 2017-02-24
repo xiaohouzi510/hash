@@ -3,7 +3,8 @@
 #include <string.h>
 #include <assert.h>
 
-#define MAX_COUNT 50
+#define MAX_COUNT 1000000
+
 int main(int argc,char *argv[])
 {
 	int keys[MAX_COUNT];
@@ -20,15 +21,21 @@ int main(int argc,char *argv[])
 	int max = 100000000;
 	for(i = 0;i < MAX_COUNT;++i)
 	{
-		keys[i]   = rand() % max + 1;
-		values[i] = rand() % max + 1;
-		hash_insert(&h,keys[i],&values[i]);
+		while(true)
+		{
+			keys[i]   = rand() % max + 1;
+			values[i] = rand() % max + 1;
+			if(hash_insert(&h,keys[i],&values[i]))
+			{
+				break;
+			}
+		}
 	}
 
 	for(i = 0;i < MAX_COUNT;++i)
 	{
 		int *value = hash_find(&h,keys[i]);
-		printf("%d %d %d\n",keys[i],*value,values[i]);
+		//printf("%d %d %d\n",keys[i],*value,values[i]);
 		assert(*value==values[i]);
 	}
 

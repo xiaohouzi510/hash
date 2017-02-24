@@ -4,4 +4,4 @@ main : main.c hash.c
 	gcc -g -o $@ $^
 
 clean :
-	rm -rf main
+	rm -rf main *core*

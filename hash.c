@@ -2,6 +2,7 @@
 #include <time.h>
 #include "hash.h"
 #include <string.h>
+#include <stdio.h>
 
 #define ARRAY_COUNT 4
 
@@ -41,11 +42,29 @@ void hash_extend(struct hash *h)
 			}
 		}
 	}
+
+	free(h->m_datas);
+	h->m_cap   = new_cap;
+	h->m_datas = new_data;
 }
 
-void hash_insert(struct hash *h,int key,void *value)
+bool is_have_key(struct hash_table *node,int key)
 {
-	int hash_key 	  = h->m_cap % key;
+	while(node != NULL)
+	{
+		if(node->m_key == key)
+		{
+			return true;
+		}
+		node = node->m_next;
+	}
+
+	return false;
+}
+
+bool hash_insert(struct hash *h,int key,void *value)
+{
+	int hash_key 	  = key % h->m_cap ;
 	struct hash_table *data  = malloc(sizeof(struct hash_table));
 	memset(data,0,sizeof(struct hash_table));
 
@@ -53,6 +72,10 @@ void hash_insert(struct hash *h,int key,void *value)
 	data->m_key  = key;
 
 	struct hash_table *old_data = h->m_datas[hash_key];
+	if(is_have_key(old_data,key))
+	{
+		return false;
+	}
 
 	if(old_data == NULL)
 	{
@@ -65,16 +88,18 @@ void hash_insert(struct hash *h,int key,void *value)
 	}
 	++h->m_count;
 
-	float p = h->m_count / h->m_cap;
+	float p = (float)h->m_count / (float)h->m_cap;
 	if(p >= 0.8f)
 	{
 		hash_extend(h);
 	}
+
+	return true;
 }
 
 void* hash_find(struct hash *h,int key)
 {
-	int hash_key = h->m_cap % key;
+	int hash_key = key % h->m_cap;
 	struct hash_table *old_data = h->m_datas[hash_key];
 	if(old_data == NULL)
 	{
@@ -95,7 +120,7 @@ void* hash_find(struct hash *h,int key)
 
 void* hash_remove(struct hash *h,int key)
 {
-	int hash_key = h->m_cap % key;
+	int hash_key = key % h->m_cap;
 	struct hash_table *old_data = h->m_datas[hash_key];
 	if(old_data == NULL)
 	{

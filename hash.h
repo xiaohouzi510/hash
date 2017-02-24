@@ -1,6 +1,8 @@
 #ifndef HASH_H
 #define HASH_H
 
+#include <stdbool.h>
+
 struct hash_table
 {
 	void *m_data;
@@ -16,7 +18,7 @@ struct hash
 };
 
 void hash_init(struct hash *h);
-void hash_insert(struct hash *h,int key,void *value);
+bool hash_insert(struct hash *h,int key,void *value);
 void* hash_find(struct hash *h,int key);
 void* hash_remove(struct hash *h,int key);
 
