@@ -1,7 +1,7 @@
 all : main
 
-main : main.c hash.c
-	gcc -g -o $@ $^
+main : main.cpp hash.cpp
+	g++ -g -o $@ $^
 
 clean :
 	rm -rf main *core*

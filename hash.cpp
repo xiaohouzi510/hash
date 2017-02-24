@@ -8,7 +8,7 @@
 
 void hash_init(struct hash *h)
 {
-	h->m_datas  = malloc(sizeof(struct hash_table*) * ARRAY_COUNT);
+	h->m_datas  = (hash_table**)malloc(sizeof(struct hash_table*) * ARRAY_COUNT);
 	h->m_cap    = ARRAY_COUNT;
 	h->m_count  = 0;
 	memset(h->m_datas,0,sizeof(struct hash_table*) * ARRAY_COUNT);
@@ -16,7 +16,7 @@ void hash_init(struct hash *h)
 
 void hash_extend(struct hash *h)
 {
-	struct hash_table **new_data = malloc(sizeof(struct hash_table*) * h->m_cap * 2);
+	struct hash_table **new_data = (hash_table**)malloc(sizeof(struct hash_table*) * h->m_cap * 2);
 	memset(new_data,0,sizeof(struct hash_table*) * h->m_cap * 2);
 	int new_cap = h->m_cap * 2;
 	struct hash_table *temp = NULL;
@@ -71,7 +71,7 @@ bool hash_insert(struct hash *h,int key,void *value)
 		return false;
 	}
 
-	struct hash_table *data  = malloc(sizeof(struct hash_table));
+	struct hash_table *data  = (hash_table*)malloc(sizeof(struct hash_table));
 	memset(data,0,sizeof(struct hash_table));
 
 	data->m_data = value;
