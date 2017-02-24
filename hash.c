@@ -64,18 +64,18 @@ bool is_have_key(struct hash_table *node,int key)
 
 bool hash_insert(struct hash *h,int key,void *value)
 {
-	int hash_key 	  = key % h->m_cap ;
-	struct hash_table *data  = malloc(sizeof(struct hash_table));
-	memset(data,0,sizeof(struct hash_table));
-
-	data->m_data = value;
-	data->m_key  = key;
-
+	int hash_key 	  = key % h->m_cap;
 	struct hash_table *old_data = h->m_datas[hash_key];
 	if(is_have_key(old_data,key))
 	{
 		return false;
 	}
+
+	struct hash_table *data  = malloc(sizeof(struct hash_table));
+	memset(data,0,sizeof(struct hash_table));
+
+	data->m_data = value;
+	data->m_key  = key;
 
 	if(old_data == NULL)
 	{
